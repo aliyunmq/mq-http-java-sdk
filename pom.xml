@@ -209,6 +209,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <scm>
+        <tag>master</tag>
+        <url>https://github.com/aliyunmq/mq-http-java-sdk</url>
+        <connection>scm:git:https://github.com/aliyunmq/mq-http-java-sdk.git</connection>
+        <developerConnection>scm:git:https://github.com/aliyunmq/mq-http-java-sdk.git</developerConnection>
+    </scm>
     <developers>
         <developer>
             <id>aliyunmq</id>
@@ -223,10 +229,4 @@
             </roles>
         </developer>
     </developers>
-
-  <scm>
-    <connection>scm:svn:http://svn.sonatype.org/spice/tags/mq-http-sdk-1.0.0</connection>
-    <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/mq-http-sdk-1.0.0</developerConnection>
-    <url>http://svn.sonatype.org/spice/tags/mq-http-sdk-1.0.0</url>
-  </scm>
 </project>
