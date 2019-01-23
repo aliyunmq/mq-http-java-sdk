@@ -48,6 +48,7 @@ public class MQConsumer {
      * @param instanceId,  instance id
      * @param topicName,   topic name
      * @param consumer     mq cid
+     * @param messageTag    message tag for filter
      * @param client,      ServiceClient object
      * @param credentials, ServiceCredentials object
      * @param endpoint,    user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
@@ -192,6 +193,8 @@ public class MQConsumer {
      * @param callback,      user callback object
      * @throws ServiceException Exception from server
      * @throws ClientException Exception from client
+     *
+     * @return AsyncResult, you can get the result blocked.
      */
     public AsyncResult<Void> asyncAckMessage(List<String> receiptHandles, AsyncCallback<Void> callback)
             throws ServiceException, ClientException {
