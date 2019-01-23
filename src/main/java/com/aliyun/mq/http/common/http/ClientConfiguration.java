@@ -3,9 +3,6 @@ package com.aliyun.mq.http.common.http;
 import com.aliyun.mq.http.common.utils.VersionInfoUtils;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-/**
- * 访问阿里云服务的客户端配置。
- */
 public class ClientConfiguration implements Cloneable {
 
     private static final String DEFAULT_USER_AGENT = VersionInfoUtils.getDefaultUserAgent();
