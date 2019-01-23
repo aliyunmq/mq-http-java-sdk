@@ -117,7 +117,7 @@ public class MQConsumer {
      * @param pollingSecond if greater than 0, means the time(second) the request holden at server if there is no message to consume.
      *                      If less or equal 0, means the server will response back if there is no message to consume.
      *                      value: 1~30
-     * @return null or List<Message>
+     * @return null or List
      */
     public List<Message> consumeMessage(int num, int pollingSecond)
             throws ServiceException, ClientException {
