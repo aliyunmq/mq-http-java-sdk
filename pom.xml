@@ -129,7 +129,7 @@
                 <version>2.8</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <excludePackageNames>com.aliyun.common.*;*.internal;*.internal.*;*.impl;</excludePackageNames>
+                    <excludePackageNames>com.aliyun.mq.http.common.*;com.aliyun.mq.http.model.action.*;com.aliyun.mq.http.model.request.*;com.aliyun.mq.http.model.serialize.*;</excludePackageNames>
                     <tags>
                         <tag>
                             <name>author</name>
