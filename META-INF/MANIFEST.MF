@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Sealed: true
+Created-By: AliyunMQ
+Implementation-Title: Aliyun Message Queue(MQ) Http Java SDK
+Implementation-Version: 1.0.0-SNAPSHOT
+url: https://github.com/aliyunmq/mq-http-java-sdk

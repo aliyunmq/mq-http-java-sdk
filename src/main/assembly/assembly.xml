@@ -1,0 +1,20 @@
+<assembly>
+    <id>allinone</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+    <!--fileSets>
+      <fileSet>
+        <outputDirectory>/</outputDirectory>
+        <includes>
+          <include>README.txt</include>
+        </includes>
+      </fileSet>
+    </fileSets-->
+</assembly>
