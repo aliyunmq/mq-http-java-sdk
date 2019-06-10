@@ -27,7 +27,14 @@ Or With-dependencies
 
 ### Sample
 
+#### V1.0.0 Samples
 [Publish Message](https://github.com/aliyunmq/mq-http-samples/blob/master/java/src/main/java/Producer.java)
 
 [Consume Message](https://github.com/aliyunmq/mq-http-samples/blob/master/java/src/main/java/Consumer.java)
 
+#### V1.0.1 Samples
+[Publish Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/Producer.java)
+
+[Consume Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/Consumer.java)
+
+[Transaction Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/TransProducer.java)
