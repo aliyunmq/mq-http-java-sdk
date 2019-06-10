@@ -1,9 +1,10 @@
 package com.aliyun.mq.http.model;
 
-
 import com.aliyun.mq.http.common.Constants;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseMessage {
 
@@ -11,6 +12,7 @@ public abstract class BaseMessage {
     private String messageId;
     private String messageBodyMD5;
     private byte[] messageBodyBytes;
+    private Map<String, String> properties;
 
 
     public BaseMessage() {
@@ -18,6 +20,7 @@ public abstract class BaseMessage {
         this.messageId = null;
         this.messageBodyMD5 = null;
         this.messageBodyBytes = null;
+        this.properties = new HashMap<String, String>(4);
     }
 
     public String getRequestId() {
@@ -100,6 +103,13 @@ public abstract class BaseMessage {
         setMessageBody(messageBody.getBytes(Constants.DEFAULT_CHARSET));
     }
 
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
+    }
 
     @Override
     public String toString() {
@@ -115,6 +125,10 @@ public abstract class BaseMessage {
 
         if (requestId != null) {
             sb.append("RequestID:" + this.requestId + ",");
+        }
+
+        if (properties != null && !properties.isEmpty()) {
+            sb.append("Properties:" + this.properties);
         }
         return sb.toString();
     }

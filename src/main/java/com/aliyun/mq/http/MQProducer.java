@@ -14,24 +14,24 @@ import com.aliyun.mq.http.model.request.PublishMessageRequest;
 import java.net.URI;
 
 public class MQProducer {
-    private ServiceClient serviceClient;
+    protected ServiceClient serviceClient;
     /**
      * topic url, ie: http://uid.mqrest.region.aliyuncs.com/topics/topicName
      */
-    private String topicURL;
-    private String topicName;
+    protected String topicURL;
+    protected String topicName;
     /**
      * object content user auth info
      */
-    private ServiceCredentials credentials;
+    protected ServiceCredentials credentials;
     /**
      * user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
      */
-    private URI endpoint;
+    protected URI endpoint;
     /**
      * instance id
      */
-    private String instanceId;
+    protected String instanceId;
 
     /**
      * @param instanceId,  instance id
@@ -64,6 +64,28 @@ public class MQProducer {
         return instanceId;
     }
 
+    protected void checkMessage(TopicMessage msg) throws ClientException {
+        String prop = msg.getProperties().get(Constants.MESSAGE_PROPERTIES_TRANS_CHECK_KEY);
+        if (prop == null || prop.length() <= 0) {
+            return;
+        }
+        try {
+            Integer.valueOf(prop);
+        } catch (Throwable e) {
+            throw new ClientException("Should setTransCheckImmunityTime Integer!", "LocalClientError");
+        }
+
+        prop = msg.getProperties().get(Constants.MESSAGE_PROPERTIES_TIMER_KEY);
+        if (prop == null || prop.length() <= 0) {
+            return;
+        }
+        try {
+            Long.valueOf(prop);
+        } catch (Throwable e) {
+            throw new ClientException("Should setStartDeliverTime Long!", "LocalClientError");
+        }
+    }
+
     /**
      * publish message to topic
      *
@@ -73,6 +95,8 @@ public class MQProducer {
      * @throws ClientException Exception from client
      */
     public TopicMessage publishMessage(TopicMessage msg) throws ServiceException, ClientException {
+        checkMessage(msg);
+
         PublishMessageRequest request = new PublishMessageRequest();
         request.setMessage(msg);
         request.setInstanceId(instanceId);
@@ -83,13 +107,14 @@ public class MQProducer {
 
     /**
      * async publish message to topic
-     * so, when you receive this message, you should do base64 decode before use it.
      *
      * @param msg message
      * @param callback, user callback object
      * @return AsyncResult, you can get the result blocked.
      */
     public AsyncResult<TopicMessage> asyncPublishMessage(TopicMessage msg, AsyncCallback<TopicMessage> callback) {
+        checkMessage(msg);
+
         PublishMessageRequest request = new PublishMessageRequest();
         request.setMessage(msg);
         request.setInstanceId(instanceId);

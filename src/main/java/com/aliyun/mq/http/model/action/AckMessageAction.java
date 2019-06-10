@@ -42,6 +42,9 @@ public class AckMessageAction extends AbstractAction<AckMessageRequest, Void> {
         if (reqObject.getInstanceId() != null && reqObject.getInstanceId() != "") {
             uri += "&" + Constants.PARAM_NS + "=" + reqObject.getInstanceId();
         }
+        if (reqObject.getTrans() != null && reqObject.getTrans().length() > 0) {
+            uri += "&" + Constants.PARAM_TRANSACTION + "=" + reqObject.getTrans();
+        }
         requestMessage.setResourcePath(uri);
         try {
             ReceiptHandleListSerializer serializer = new ReceiptHandleListSerializer();

@@ -7,6 +7,7 @@ public class ConsumeMessageRequest extends AbstractRequest {
     private int batchSize = 1;
     private String tag;
     private String consumer;
+    private String trans = null;
 
     public int getWaitSeconds() {
         return waitSeconds;
@@ -38,5 +39,13 @@ public class ConsumeMessageRequest extends AbstractRequest {
 
     public void setConsumer(String consumer) {
         this.consumer = consumer;
+    }
+
+    public String getTrans() {
+        return trans;
+    }
+
+    public void setTrans(String trans) {
+        this.trans = trans;
     }
 }

@@ -89,6 +89,12 @@ public class MessageListDeserializer extends XMLDeserializer<List<Message>> {
 
         message.setMessageTag(safeGetElementContent(root, Constants.MESSAGE_TAG_TAG, null));
 
+        String properties = safeGetElementContent(root, Constants.MESSAGE_PROPERTIES,
+                null);
+        if (properties != null) {
+            message.setProperties(XmlUtil.stringTopMap(properties));
+        }
+
         return message;
     }
 }

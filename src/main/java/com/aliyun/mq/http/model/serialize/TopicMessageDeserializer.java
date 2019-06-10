@@ -33,6 +33,9 @@ public class TopicMessageDeserializer extends XMLDeserializer<TopicMessage> {
                 Constants.MESSAGE_BODY_MD5_TAG, null);
         message.setMessageBodyMD5(messageBodyMD5);
 
+        String handle = safeGetElementContent(root, Constants.RECEIPT_HANDLE_TAG, null);
+        message.setReceiptHandle(handle);
+
         return message;
     }
 }

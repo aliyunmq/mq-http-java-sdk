@@ -1,5 +1,7 @@
 package com.aliyun.mq.http.model;
 
+import com.aliyun.mq.http.common.Constants;
+
 public final class Message extends BaseMessage {
     /**
      * the handle of message, used to ack
@@ -82,6 +84,25 @@ public final class Message extends BaseMessage {
         this.messageTag = messageTag;
     }
 
+    public long getStartDeliverTime() {
+        String value = getProperties().get(Constants.MESSAGE_PROPERTIES_TIMER_KEY);
+        if (value == null) {
+            return 0;
+        }
+        return Long.valueOf(value);
+    }
+
+    public int getTransCheckImmunityTime() {
+        String value = getProperties().get(Constants.MESSAGE_PROPERTIES_TRANS_CHECK_KEY);
+        if (value == null) {
+            return 0;
+        }
+        return Integer.valueOf(value);
+    }
+
+    public String getMessageKey() {
+        return getProperties().get(Constants.MESSAGE_PROPERTIES_MSG_KEY);
+    }
 
     public ErrorMessageResult getErrorMessageDetail() {
         return this.errorMessage;
@@ -102,7 +123,8 @@ public final class Message extends BaseMessage {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Message{");
-        sb.append("receiptHandle='").append(receiptHandle).append('\'');
+        sb.append(super.toString());
+        sb.append(", receiptHandle='").append(receiptHandle).append('\'');
         sb.append(", publishTime=").append(publishTime);
         sb.append(", nextConsumeTime=").append(nextConsumeTime);
         sb.append(", firstConsumeTime=").append(firstConsumeTime);

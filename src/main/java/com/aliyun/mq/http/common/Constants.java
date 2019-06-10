@@ -31,6 +31,10 @@ public interface Constants extends HttpHeaders {
     String FIRST_CONSUME_TIME_TAG = "FirstConsumeTime";
     String CONSUMED_TIMES_TAG = "ConsumedTimes";
     String MESSAGE_TAG_TAG = "MessageTag";
+    String MESSAGE_PROPERTIES = "Properties";
+    String MESSAGE_PROPERTIES_TIMER_KEY = "__STARTDELIVERTIME";
+    String MESSAGE_PROPERTIES_TRANS_CHECK_KEY = "__TransCheckT";
+    String MESSAGE_PROPERTIES_MSG_KEY = "KEYS";
 
     String ERROR_LIST_TAG = "Errors";
     String ERROR_TAG = "Error";
@@ -46,6 +50,8 @@ public interface Constants extends HttpHeaders {
     String PARAM_CONSUMER = "consumer";
     String PARAM_CONSUME_NUM = "numOfMessages";
     String PARAM_NS = "ns";
+    String PARAM_TRANSACTION = "trans";
+    String PARAM_TRANSACTION_V_POP = "pop";
 
     String SLASH = "/";
     String HTTP_PREFIX = "http://";

@@ -48,6 +48,9 @@ public class ConsumeMessageAction extends
         if (reqObject.getWaitSeconds() > 0) {
             uri += "&" + Constants.PARAM_WAIT_SECONDS + "=" + reqObject.getWaitSeconds();
         }
+        if (reqObject.getTrans() != null && reqObject.getTrans().length() > 0) {
+            uri += "&" + Constants.PARAM_TRANSACTION + "=" + reqObject.getTrans();
+        }
 
         requestMessage.setResourcePath(uri);
         return requestMessage;

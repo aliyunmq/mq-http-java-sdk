@@ -123,6 +123,29 @@ public class MQClient {
     }
 
     /**
+     * default instance, mq transaction producer
+     *
+     * @param topicName topic name
+     * @param groupId consumer id or group id that is for consume transaction half msg.
+     * @return MQTransProducer
+     */
+    public MQTransProducer getTransProducer(String topicName, String groupId) {
+        return new MQTransProducer(null, topicName, groupId, this.serviceClient, this.credentials, this.endpoint);
+    }
+
+    /**
+     * with instance, mq transaction producer
+     *
+     * @param instanceId instance id
+     * @param topicName topic name
+     * @param groupId consumer id or group id that is for consume transaction half msg.
+     * @return MQTransProducer
+     */
+    public MQTransProducer getTransProducer(String instanceId, String topicName, String groupId) {
+        return new MQTransProducer(instanceId, topicName, groupId, this.serviceClient, this.credentials, this.endpoint);
+    }
+
+    /**
      * default instance with filter message tag.
      *
      * @param topicName topic name
