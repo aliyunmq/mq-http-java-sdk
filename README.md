@@ -38,3 +38,5 @@ Or With-dependencies
 [Consume Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/Consumer.java)
 
 [Transaction Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/TransProducer.java)
+
+Note for 1.0.1: Http consumer only support timer msg(less than 3 days), no matter the msg is produced from http or tcp protocal.
