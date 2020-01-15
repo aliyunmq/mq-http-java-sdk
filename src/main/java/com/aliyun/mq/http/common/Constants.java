@@ -35,6 +35,7 @@ public interface Constants extends HttpHeaders {
     String MESSAGE_PROPERTIES_TIMER_KEY = "__STARTDELIVERTIME";
     String MESSAGE_PROPERTIES_TRANS_CHECK_KEY = "__TransCheckT";
     String MESSAGE_PROPERTIES_MSG_KEY = "KEYS";
+    String MESSAGE_PROPERTIES_SHARDING = "__SHARDINGKEY";
 
     String ERROR_LIST_TAG = "Errors";
     String ERROR_TAG = "Error";
@@ -52,6 +53,7 @@ public interface Constants extends HttpHeaders {
     String PARAM_NS = "ns";
     String PARAM_TRANSACTION = "trans";
     String PARAM_TRANSACTION_V_POP = "pop";
+    String PARAM_ORDER = "order";
 
     String SLASH = "/";
     String HTTP_PREFIX = "http://";

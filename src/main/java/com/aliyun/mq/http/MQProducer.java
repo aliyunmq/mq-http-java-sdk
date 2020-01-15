@@ -87,7 +87,12 @@ public class MQProducer {
     }
 
     /**
-     * publish message to topic
+     * publish message to topic.
+     *
+     * <pre>
+     *     - Timing message : {@link TopicMessage#setStartDeliverTime(long)}
+     *     - Ordered message : {@link TopicMessage#setShardingKey(String)}
+     * </pre>
      *
      * @param msg message
      * @return message from server
@@ -106,7 +111,12 @@ public class MQProducer {
     }
 
     /**
-     * async publish message to topic
+     * async publish message to topic.
+     *
+     * <pre>
+     *     - Timing message : {@link TopicMessage#setStartDeliverTime(long)}
+     *     - Ordered message : {@link TopicMessage#setShardingKey(String)}, it's recommended to sync publish order message.
+     * </pre>
      *
      * @param msg message
      * @param callback, user callback object

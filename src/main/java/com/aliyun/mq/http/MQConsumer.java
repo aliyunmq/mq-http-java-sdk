@@ -14,7 +14,9 @@ import com.aliyun.mq.http.model.action.ConsumeMessageAction;
 import com.aliyun.mq.http.model.request.AckMessageRequest;
 import com.aliyun.mq.http.model.request.ConsumeMessageRequest;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class MQConsumer {
@@ -71,7 +73,15 @@ public class MQConsumer {
         if (this.consumer == null || this.consumer.isEmpty()) {
             throw new RuntimeException("Consumer can't be empty");
         }
-        this.messageTag = messageTag;
+        if (messageTag != null) {
+            try {
+                this.messageTag = URLEncoder.encode(messageTag, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("messageTag maybe not utf-8 character.", e);
+            }
+        } else {
+            this.messageTag = null;
+        }
     }
 
     /**
@@ -127,6 +137,46 @@ public class MQConsumer {
         request.setTag(messageTag);
         request.setWaitSeconds(pollingSecond);
         request.setInstanceId(this.instanceId);
+
+        try {
+            ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);
+            request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
+            return action.executeWithCustomHeaders(request, null);
+        } catch (ServiceException e) {
+            if (Constants.CODE_MESSAGE_NOT_EXIST.equals(e.getErrorCode())) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * sync consume message from topic orderly.
+     *
+     * Next messages will be consumed if all of same shard are acked. Otherwise, same messages will be consumed again after NextConsumeTime.
+     *
+     * Attention: the topic should be order topic created at console, if not, mq could not keep the order feature.
+     *
+     * This interface is suitable for globally order and partitionally order messages, and could be used in multi-thread scenes.
+     *
+     * @param num           the count of messages consumed once
+     *                      value: 1~16
+     * @param pollingSecond if greater than 0, means the time(second) the request holden at server if there is no message to consume.
+     *                      If less or equal 0, means the server will response back if there is no message to consume.
+     *                      value: 1~30
+     * @return null or List may contains several shard's messages, the messages of one shard are ordered.
+     *                      Get the sharding key through {@link Message#getShardingKey()}
+     */
+    public List<Message> consumeMessageOrderly(int num, int pollingSecond)
+            throws ServiceException, ClientException {
+        ConsumeMessageRequest request = new ConsumeMessageRequest();
+        request.setConsumer(this.consumer);
+        request.setBatchSize(num);
+        request.setTag(messageTag);
+        request.setWaitSeconds(pollingSecond);
+        request.setInstanceId(this.instanceId);
+        request.setTrans("order");
 
         try {
             ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);

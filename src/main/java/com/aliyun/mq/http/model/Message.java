@@ -16,7 +16,7 @@ public final class Message extends BaseMessage {
      */
     private long nextConsumeTime;
     /**
-     * first consume time
+     * first consume time, it's meaningless for orderly consume.
      */
     private long firstConsumeTime;
     /**
@@ -102,6 +102,10 @@ public final class Message extends BaseMessage {
 
     public String getMessageKey() {
         return getProperties().get(Constants.MESSAGE_PROPERTIES_MSG_KEY);
+    }
+
+    public String getShardingKey() {
+        return getProperties().get(Constants.MESSAGE_PROPERTIES_SHARDING);
     }
 
     public ErrorMessageResult getErrorMessageDetail() {

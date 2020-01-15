@@ -69,6 +69,16 @@ public class TopicMessage extends BaseMessage {
         getProperties().put(Constants.MESSAGE_PROPERTIES_MSG_KEY, key);
     }
 
+    /**
+     * 分区顺序消息中区分不同分区的关键字段，sharding key 于普通消息的 key 是完全不同的概念。
+     * 全局顺序消息，该字段可以设置为任意非空字符串。
+     *
+     * @param shardingKey
+     */
+    public void setShardingKey(String shardingKey) {
+        getProperties().put(Constants.MESSAGE_PROPERTIES_SHARDING, shardingKey);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("TopicMessage{");
