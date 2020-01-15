@@ -32,16 +32,14 @@ Or With-dependencies
 
 [Consume Message](https://github.com/aliyunmq/mq-http-samples/blob/master/java/src/main/java/Consumer.java)
 
-#### V1.0.1 Samples
+#### V1.0.1~V1.0.2 Samples
 [Publish Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/Producer.java)
 
 [Consume Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/Consumer.java)
 
 [Transaction Message](https://github.com/aliyunmq/mq-http-samples/tree/101-dev/java/src/main/java/TransProducer.java)
 
-Note for 1.0.1: Http consumer only support timer msg(less than 3 days), no matter the msg is produced from http or tcp protocal.
-
-#### V1.0.1 Samples
+#### V1.0.3~ Samples
 [Publish Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/java/src/main/java/Producer.java)
 
 [Consume Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/java/src/main/java/Consumer.java)
@@ -51,3 +49,5 @@ Note for 1.0.1: Http consumer only support timer msg(less than 3 days), no matte
 [Publish Order Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/java/src/main/java/OrderProducer.java)
 
 [Consume Order Message](https://github.com/aliyunmq/mq-http-samples/tree/103-dev/java/src/main/java/OrderConsumer.java)
+
+Note: Http consumer only support timer msg(less than 3 days), no matter the msg is produced from http or tcp protocol.

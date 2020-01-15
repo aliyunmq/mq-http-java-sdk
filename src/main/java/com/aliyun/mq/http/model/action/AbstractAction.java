@@ -6,6 +6,7 @@ import com.aliyun.mq.http.common.HttpMethod;
 import com.aliyun.mq.http.common.ServiceException;
 import com.aliyun.mq.http.common.auth.ServiceCredentials;
 import com.aliyun.mq.http.common.auth.ServiceSignature;
+import com.aliyun.mq.http.common.utils.Utils;
 import com.aliyun.mq.http.model.AbstractRequest;
 import com.aliyun.mq.http.model.AsyncCallback;
 import com.aliyun.mq.http.model.AsyncResult;
@@ -16,10 +17,10 @@ import com.aliyun.mq.http.common.http.RequestMessage;
 import com.aliyun.mq.http.common.http.ServiceClient;
 import com.aliyun.mq.http.common.parser.ResultParser;
 import com.aliyun.mq.http.common.utils.DateUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
-import org.apache.log4j.Logger;
 
-import java.util.UUID;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.concurrent.Future;
 public abstract class AbstractAction<T extends AbstractRequest, V> implements
         Action<T, V> {
 
-    public static Logger logger = Logger.getLogger(AbstractAction.class);
+    public static Log logger = LogFactory.getLog(Utils.class);
     protected String actionName = "";
     private ServiceClient client;
     private ServiceCredentials credentials;
