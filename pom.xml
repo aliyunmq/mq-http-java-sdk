@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.aliyun.mq</groupId>
     <artifactId>mq-http-sdk</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Aliyun MQ Java HTTP SDK</name>
     <url>http://www.aliyun.com/product/ons</url>
