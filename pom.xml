@@ -222,8 +222,8 @@
     <scm>
         <tag>master</tag>
         <url>https://github.com/aliyunmq/mq-http-java-sdk</url>
-        <connection>scm:git:https://github.com/aliyunmq/mq-http-java-sdk.git</connection>
-        <developerConnection>scm:git:https://github.com/aliyunmq/mq-http-java-sdk.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/aliyunmq/mq-http-java-sdk.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/aliyunmq/mq-http-java-sdk.git</developerConnection>
     </scm>
     <developers>
         <developer>
