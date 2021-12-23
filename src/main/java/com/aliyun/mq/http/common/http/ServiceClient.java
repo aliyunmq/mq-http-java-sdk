@@ -10,8 +10,6 @@ import com.aliyun.mq.http.common.utils.ResourceManager;
 import com.aliyun.mq.http.common.utils.ServiceConstants;
 import com.aliyun.mq.http.common.comm.ExecutionContext;
 import com.aliyun.mq.http.common.comm.ResponseHandler;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 
 import java.io.ByteArrayInputStream;
@@ -20,11 +18,13 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.concurrent.Future;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class ServiceClient {
 
     private static final int DEFAULT_MARK_LIMIT = 1024 * 4;
-    private static final Log log = LogFactory.getLog(ServiceClient.class);
+    private static final Logger log = LoggerFactory.getLogger(ServiceClient.class);
     private static ResourceManager rm = ResourceManager
             .getInstance(ServiceConstants.RESOURCE_NAME_COMMON);
     private ClientConfiguration config;

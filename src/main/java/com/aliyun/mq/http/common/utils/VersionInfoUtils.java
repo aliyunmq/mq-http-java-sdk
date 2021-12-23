@@ -1,7 +1,7 @@
 package com.aliyun.mq.http.common.utils;
 
 public class VersionInfoUtils {
-    private static String version = "1.0.3";
+    private static String version = "1.0.3.2";
 
     private static String defaultUserAgent = null;
 

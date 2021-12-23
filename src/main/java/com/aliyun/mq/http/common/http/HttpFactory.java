@@ -6,6 +6,7 @@ import com.aliyun.mq.http.common.utils.HttpHeaders;
 import com.aliyun.mq.http.common.utils.VersionInfoUtils;
 import com.aliyun.mq.http.common.comm.ExecutionContext;
 import com.aliyun.mq.http.common.comm.RepeatableInputStreamEntity;
+import java.io.IOException;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
@@ -34,11 +35,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
+import org.apache.http.nio.reactor.IOReactorExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The factory to create HTTP-related objects.
  */
 public class HttpFactory {
+
+    public static Logger logger = LoggerFactory.getLogger(HttpFactory.class);
 
     private static SSLConnectionSocketFactory getSSLSocketFactory() {
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
@@ -78,9 +84,22 @@ public class HttpFactory {
                 .setSoKeepAlive(config.isSoKeepAlive()).build();
 
         // Create a custom I/O reactort
-        ConnectingIOReactor ioReactor;
+        DefaultConnectingIOReactor ioReactor;
         try {
             ioReactor = new DefaultConnectingIOReactor(ioReactorConfig);
+            ioReactor.setExceptionHandler(new IOReactorExceptionHandler() {
+                @Override
+                public boolean handle(IOException ex) {
+                    logger.error("I/O error", ex);
+                    return true;
+                }
+
+                @Override
+                public boolean handle(RuntimeException ex) {
+                    logger.error("I/O runtime error", ex);
+                    return true;
+                }
+            });
         } catch (IOReactorException e) {
             throw new RuntimeException(e);
         }

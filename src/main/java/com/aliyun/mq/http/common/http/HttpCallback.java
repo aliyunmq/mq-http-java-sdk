@@ -6,8 +6,6 @@ import com.aliyun.mq.http.common.ClientException;
 import com.aliyun.mq.http.common.parser.ResultParser;
 import com.aliyun.mq.http.common.utils.HttpUtil;
 import com.aliyun.mq.http.common.utils.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.concurrent.FutureCallback;
@@ -18,9 +16,11 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpCallback<T> implements FutureCallback<HttpResponse> {
-    private static Log log = LogFactory.getLog(HttpCallback.class);
+    private static Logger log = LoggerFactory.getLogger(HttpCallback.class);
     private boolean success = false;
     private Exception exception = null;
     private ResponseMessage responseMessage = null;

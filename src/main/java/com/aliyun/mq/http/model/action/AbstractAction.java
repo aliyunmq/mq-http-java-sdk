@@ -17,8 +17,6 @@ import com.aliyun.mq.http.common.http.RequestMessage;
 import com.aliyun.mq.http.common.http.ServiceClient;
 import com.aliyun.mq.http.common.parser.ResultParser;
 import com.aliyun.mq.http.common.utils.DateUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 
 import java.net.URI;
@@ -27,11 +25,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Future;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractAction<T extends AbstractRequest, V> implements
         Action<T, V> {
 
-    public static Log logger = LogFactory.getLog(Utils.class);
+    public static Logger logger = LoggerFactory.getLogger(Utils.class);
     protected String actionName = "";
     private ServiceClient client;
     private ServiceCredentials credentials;

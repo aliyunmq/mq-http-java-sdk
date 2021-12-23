@@ -11,7 +11,7 @@ Aliyun MQ Console: https://ons.console.aliyun.com
 <dependency>
     <groupId>com.aliyun.mq</groupId>
     <artifactId>mq-http-sdk</artifactId>
-    <version>1.0.3.1</version>
+    <version>1.0.3.2</version>
 </dependency>
 ```
 
@@ -20,7 +20,7 @@ Or With-dependencies
 <dependency>
     <groupId>com.aliyun.mq</groupId>
     <artifactId>mq-http-sdk</artifactId>
-    <version>1.0.3.1</version>
+    <version>1.0.3.2</version>
     <classifier>jar-with-dependencies</classifier>
 </dependency>
 ```

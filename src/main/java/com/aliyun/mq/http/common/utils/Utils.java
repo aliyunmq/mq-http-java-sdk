@@ -1,14 +1,14 @@
 package com.aliyun.mq.http.common.utils;
 
 import com.aliyun.mq.http.common.Constants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Utils {
-    public static Log logger = LogFactory.getLog(Utils.class);
+    public static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     public static URI getHttpURI(String endpoint) {
         if (endpoint == null) {
