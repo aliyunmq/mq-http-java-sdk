@@ -8,6 +8,7 @@ import com.aliyun.mq.http.common.http.ServiceClient;
 import com.aliyun.mq.http.common.http.ServiceClientFactory;
 
 import java.net.URI;
+import javax.print.DocFlavor;
 
 public class MQClient {
 
@@ -26,6 +27,25 @@ public class MQClient {
      */
     private ServiceCredentials credentials;
     private ClientConfiguration config;
+
+    private static volatile MQProducer PRODUCER;
+    private static volatile MQTransProducer TRANSACTIONAL_PRODUCER;
+    private static volatile MQConsumer CONSUMER;
+
+    private static MQConsumer buildConsumer(String instanceId, String topicName, String consumer, String messageTag, ServiceClient client,
+        ServiceCredentials credentials, URI endpoint) {
+        return new MQConsumer(instanceId, topicName, consumer, messageTag, client, credentials, endpoint);
+    }
+
+    private static MQProducer buildProducer(String instanceId, String topicName, ServiceClient client,
+        ServiceCredentials credentials, URI endpoint) {
+        return new MQProducer(instanceId, topicName, client, credentials, endpoint);
+    }
+
+    private static MQTransProducer buildTransactionalProducer(String instanceId, String topicName, String groupId, ServiceClient client,
+        ServiceCredentials credentials, URI endpoint) {
+        return new MQTransProducer(instanceId, topicName, groupId, client, credentials, endpoint);
+    }
 
     /**
      * init a MQ client with default client config
@@ -108,7 +128,14 @@ public class MQClient {
      * @return MQProducer
      */
     public MQProducer getProducer(String topicName) {
-        return new MQProducer(null, topicName, this.serviceClient, this.credentials, this.endpoint);
+        if (null == PRODUCER) {
+            synchronized (MQClient.class) {
+                if (null == PRODUCER) {
+                    PRODUCER = buildProducer(null, topicName, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return PRODUCER;
     }
 
     /**
@@ -119,7 +146,14 @@ public class MQClient {
      * @return MQProducer
      */
     public MQProducer getProducer(String instanceId, String topicName) {
-        return new MQProducer(instanceId, topicName, this.serviceClient, this.credentials, this.endpoint);
+        if (null == PRODUCER) {
+            synchronized (MQClient.class) {
+                if (null == PRODUCER) {
+                    PRODUCER = buildProducer(instanceId, topicName, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return PRODUCER;
     }
 
     /**
@@ -130,7 +164,14 @@ public class MQClient {
      * @return MQTransProducer
      */
     public MQTransProducer getTransProducer(String topicName, String groupId) {
-        return new MQTransProducer(null, topicName, groupId, this.serviceClient, this.credentials, this.endpoint);
+        if (null == TRANSACTIONAL_PRODUCER) {
+            synchronized (MQClient.class) {
+                if (null == TRANSACTIONAL_PRODUCER) {
+                    TRANSACTIONAL_PRODUCER = buildTransactionalProducer(null, topicName, groupId, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return TRANSACTIONAL_PRODUCER;
     }
 
     /**
@@ -142,7 +183,14 @@ public class MQClient {
      * @return MQTransProducer
      */
     public MQTransProducer getTransProducer(String instanceId, String topicName, String groupId) {
-        return new MQTransProducer(instanceId, topicName, groupId, this.serviceClient, this.credentials, this.endpoint);
+        if (null == TRANSACTIONAL_PRODUCER) {
+            synchronized (MQClient.class) {
+                if (null == TRANSACTIONAL_PRODUCER) {
+                    TRANSACTIONAL_PRODUCER = buildTransactionalProducer(instanceId, topicName, groupId, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return TRANSACTIONAL_PRODUCER;
     }
 
     /**
@@ -154,7 +202,14 @@ public class MQClient {
      * @return MQConsumer
      */
     public MQConsumer getConsumer(String topicName, String consumer, String messageTag) {
-        return new MQConsumer(null, topicName, consumer, messageTag, this.serviceClient, this.credentials, this.endpoint);
+        if (null == CONSUMER) {
+            synchronized (MQClient.class) {
+                if (null == CONSUMER) {
+                    CONSUMER = buildConsumer(null, topicName, consumer, messageTag, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return CONSUMER;
     }
 
     /**
@@ -165,7 +220,14 @@ public class MQClient {
      * @return MQConsumer
      */
     public MQConsumer getConsumer(String topicName, String consumer) {
-        return new MQConsumer(null, topicName, consumer, null, this.serviceClient, this.credentials, this.endpoint);
+        if (null == CONSUMER) {
+            synchronized (MQClient.class) {
+                if (null == CONSUMER) {
+                    CONSUMER = buildConsumer(null, topicName, consumer, null, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return CONSUMER;
     }
 
     /**
@@ -178,7 +240,14 @@ public class MQClient {
      * @return MQConsumer
      */
     public MQConsumer getConsumer(String instanceId, String topicName, String consumer, String messageTag) {
-        return new MQConsumer(instanceId, topicName, consumer, messageTag, this.serviceClient, this.credentials, this.endpoint);
+        if (null == CONSUMER) {
+            synchronized (MQClient.class) {
+                if (null == CONSUMER) {
+                    CONSUMER = buildConsumer(instanceId, topicName, consumer, messageTag, this.serviceClient, this.credentials, this.endpoint);
+                }
+            }
+        }
+        return CONSUMER;
     }
 
     @Override
