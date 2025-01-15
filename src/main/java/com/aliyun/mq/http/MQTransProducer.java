@@ -1,10 +1,12 @@
 package com.aliyun.mq.http;
 
+import com.aliyun.auth.credentials.provider.ICredentialProvider;
 import com.aliyun.mq.http.common.ClientException;
 import com.aliyun.mq.http.common.Constants;
 import com.aliyun.mq.http.common.ServiceException;
 import com.aliyun.mq.http.common.auth.ServiceCredentials;
 import com.aliyun.mq.http.common.http.ServiceClient;
+import com.aliyun.mq.http.common.utils.ServiceCredentialsWrapper;
 import com.aliyun.mq.http.model.AsyncCallback;
 import com.aliyun.mq.http.model.AsyncResult;
 import com.aliyun.mq.http.model.Message;
@@ -37,6 +39,19 @@ public class MQTransProducer extends MQProducer {
     }
 
     /**
+     * @param instanceId,  instance id
+     * @param topicName,   topic name
+     * @param client,      ServiceClient object
+     * @param credentialProvider, ICredentialProvider object
+     * @param endpoint,    user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
+     */
+    protected MQTransProducer(String instanceId, String topicName, String groupId, ServiceClient client,
+                              ICredentialProvider credentialProvider, URI endpoint) {
+        super(instanceId, topicName, client, credentialProvider, endpoint);
+        this.groupId = groupId;
+    }
+
+    /**
      * consume half message to check transaction status, three choice: {@link #commit(String)} , {@link #rollback(String)}
      * or do nothing (after 10s will get the message again).
      *
@@ -58,6 +73,7 @@ public class MQTransProducer extends MQProducer {
         request.setTrans(Constants.PARAM_TRANSACTION_V_POP);
 
         try {
+            ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
             ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);
             request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
             return action.executeWithCustomHeaders(request, null);
@@ -90,6 +106,7 @@ public class MQTransProducer extends MQProducer {
         request.setConsumer(groupId);
         request.setTrans(Constants.PARAM_TRANSACTION_V_POP);
 
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);
         request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
         return action.executeWithCustomHeaders(request, callback, null);
@@ -103,6 +120,7 @@ public class MQTransProducer extends MQProducer {
      * @throws ClientException Exception from client
      */
     public void commit(String handle) throws ServiceException, ClientException {
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         AckMessageAction action = new AckMessageAction(serviceClient, credentials, endpoint);
         AckMessageRequest request = new AckMessageRequest();
         request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
@@ -122,6 +140,7 @@ public class MQTransProducer extends MQProducer {
      * @throws ClientException Exception from client
      */
     public void rollback(String handle) throws ServiceException, ClientException {
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         AckMessageAction action = new AckMessageAction(serviceClient, credentials, endpoint);
         AckMessageRequest request = new AckMessageRequest();
         request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);

@@ -1,5 +1,9 @@
 package com.aliyun.mq.http;
 
+import com.aliyun.auth.credentials.Credential;
+import com.aliyun.auth.credentials.provider.ICredentialProvider;
+import com.aliyun.auth.credentials.provider.StaticCredentialProvider;
+import com.aliyun.mq.http.common.utils.ServiceCredentialsWrapper;
 import com.aliyun.mq.http.model.AsyncCallback;
 import com.aliyun.mq.http.model.AsyncResult;
 import com.aliyun.mq.http.model.action.PublishMessageAction;
@@ -23,7 +27,7 @@ public class MQProducer {
     /**
      * object content user auth info
      */
-    protected ServiceCredentials credentials;
+    protected ICredentialProvider credentialProvider;
     /**
      * user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
      */
@@ -42,9 +46,26 @@ public class MQProducer {
      */
     protected MQProducer(String instanceId, String topicName, ServiceClient client,
                          ServiceCredentials credentials, URI endpoint) {
+        this(instanceId, topicName, client,
+                StaticCredentialProvider.create(Credential.builder()
+                        .accessKeyId(credentials.getAccessKeyId())
+                        .accessKeySecret(credentials.getAccessKeySecret())
+                        .securityToken(credentials.getSecurityToken())
+                        .build()), endpoint);
+    }
+
+    /**
+     * @param instanceId,  instance id
+     * @param topicName,   topic name
+     * @param client,      ServiceClient object
+     * @param credentialProvider, ICredentialProvider object
+     * @param endpoint,    user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
+     */
+    protected MQProducer(String instanceId, String topicName, ServiceClient client,
+                         ICredentialProvider credentialProvider, URI endpoint) {
         this.instanceId = instanceId;
         this.serviceClient = client;
-        this.credentials = credentials;
+        this.credentialProvider = credentialProvider;
         this.endpoint = endpoint;
 
         String uri = endpoint.toString();
@@ -105,6 +126,7 @@ public class MQProducer {
         PublishMessageRequest request = new PublishMessageRequest();
         request.setMessage(msg);
         request.setInstanceId(instanceId);
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         PublishMessageAction action = new PublishMessageAction(serviceClient, credentials, endpoint);
         request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
         return action.executeWithCustomHeaders(request, null);
@@ -128,6 +150,7 @@ public class MQProducer {
         PublishMessageRequest request = new PublishMessageRequest();
         request.setMessage(msg);
         request.setInstanceId(instanceId);
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         PublishMessageAction action = new PublishMessageAction(serviceClient, credentials, endpoint);
         request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
         return action.executeWithCustomHeaders(request, callback, null);

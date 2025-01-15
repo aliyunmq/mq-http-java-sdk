@@ -1,5 +1,9 @@
 package com.aliyun.mq.http;
 
+import com.aliyun.auth.credentials.Credential;
+import com.aliyun.auth.credentials.provider.ICredentialProvider;
+import com.aliyun.auth.credentials.provider.StaticCredentialProvider;
+import com.aliyun.mq.http.common.utils.ServiceCredentialsWrapper;
 import com.aliyun.mq.http.model.AsyncCallback;
 import com.aliyun.mq.http.model.AsyncResult;
 import com.aliyun.mq.http.common.ClientException;
@@ -36,7 +40,7 @@ public class MQConsumer {
     /**
      * object content user auth info
      */
-    private final ServiceCredentials credentials;
+    private final ICredentialProvider credentialProvider;
     /**
      * user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
      */
@@ -57,9 +61,27 @@ public class MQConsumer {
      */
     protected MQConsumer(String instanceId, String topicName, String consumer, String messageTag, ServiceClient client,
                          ServiceCredentials credentials, URI endpoint) {
+        this(instanceId, topicName, consumer, messageTag, client, StaticCredentialProvider.create(Credential.builder()
+                .accessKeyId(credentials.getAccessKeyId())
+                .accessKeySecret(credentials.getAccessKeySecret())
+                .securityToken(credentials.getSecurityToken())
+                .build()), endpoint);
+    }
+
+    /**
+     * @param instanceId,  instance id
+     * @param topicName,   topic name
+     * @param consumer     mq cid
+     * @param messageTag    message tag for filter
+     * @param client,      ServiceClient object
+     * @param credentialProvider, ICredentialProvider object
+     * @param endpoint,    user mq http endpoint, ie: http://uid.mqrest.region.aliyuncs.com/
+     */
+    protected MQConsumer(String instanceId, String topicName, String consumer, String messageTag, ServiceClient client,
+                         ICredentialProvider credentialProvider, URI endpoint) {
         this.instanceId = instanceId;
         this.serviceClient = client;
-        this.credentials = credentials;
+        this.credentialProvider = credentialProvider;
         this.endpoint = endpoint;
 
         String uri = endpoint.toString();
@@ -139,6 +161,7 @@ public class MQConsumer {
         request.setInstanceId(this.instanceId);
 
         try {
+            ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
             ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);
             request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
             return action.executeWithCustomHeaders(request, null);
@@ -179,6 +202,7 @@ public class MQConsumer {
         request.setTrans("order");
 
         try {
+            ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
             ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);
             request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
             return action.executeWithCustomHeaders(request, null);
@@ -211,6 +235,7 @@ public class MQConsumer {
         request.setWaitSeconds(pollingSecond);
         request.setInstanceId(this.instanceId);
 
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         ConsumeMessageAction action = new ConsumeMessageAction(serviceClient, credentials, endpoint);
         request.setRequestPath(topicURL + "/" + Constants.LOCATION_MESSAGES);
         return action.executeWithCustomHeaders(request, callback, null);
@@ -225,6 +250,7 @@ public class MQConsumer {
      * @throws ClientException Exception from client
      */
     public void ackMessage(List<String> receiptHandles) throws ServiceException, ClientException {
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         AckMessageAction action = new AckMessageAction(serviceClient, credentials, endpoint);
 
         AckMessageRequest request = new AckMessageRequest();
@@ -248,6 +274,7 @@ public class MQConsumer {
      */
     public AsyncResult<Void> asyncAckMessage(List<String> receiptHandles, AsyncCallback<Void> callback)
             throws ServiceException, ClientException {
+        ServiceCredentials credentials = ServiceCredentialsWrapper.WrapServiceCredentials(credentialProvider.getCredentials());
         AckMessageAction action = new AckMessageAction(serviceClient, credentials, endpoint);
 
         AckMessageRequest request = new AckMessageRequest();
